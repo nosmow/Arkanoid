@@ -956,7 +956,7 @@ GameObject:
   - component: {fileID: 1482067077}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1091,7 +1091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialVelocity: {x: 4, y: 6, z: 0}
   velocityMultiplayer: 1.05
-  velocityDelta: 0.7
+  velocityDelta: 0.5
   minVelocity: 0.2
 --- !u!1 &1546536376
 GameObject:
