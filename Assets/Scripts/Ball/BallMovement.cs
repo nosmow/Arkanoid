@@ -2,58 +2,104 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    [SerializeField] private Vector3 initialVelocity;
-    [SerializeField] private float velocityMultiplayer;
-    [SerializeField] private float velocityDelta;
-    [SerializeField] private float minVelocity;
+    [Header("Ball Settings")]
+    [SerializeField] private float minAxisOffsetDegrees = 10f;
+    [SerializeField] private float ballSpeed = 10f;
+    [SerializeField] private float ballSpeedIncrease = 0.05f;
+
+    [Header("Start Direction")]
+    [SerializeField] private float xStartDir = 0.0f;
+    [SerializeField] private float yStartDir = 1.0f;
+
+    [Header("Random Adjustment Range")]
+    [SerializeField] private float minAdjustment = 0.5f;
+    [SerializeField] private float maxAdjustment = 3f;
 
     private Rigidbody rb;
-    private bool isBallMoving;
+    private float minOffset;
+    private bool isMoving;
 
-    private void Start()
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isBallMoving)
+        if (Input.GetKeyDown(KeyCode.Space) && !isMoving)
         {
-            Launch();
+            StartMoving();
         }
     }
 
-    private void Launch()
+    private void FixedUpdate()
     {
-        transform.parent = null;
-        rb.linearVelocity = initialVelocity;
-        isBallMoving = true;
+        if (isMoving)
+        {
+            MaintainConstantSpeed();
+        }
     }
 
-    private void VelocityFix()
+    #region Methods
+
+    // Method for starting the ball movement
+    private void StartMoving()
     {
-        
+        rb.isKinematic = false;
 
-        if (Mathf.Abs(rb.linearVelocity.x) < minVelocity)
-        {
-            velocityDelta = Random.value < 0.5f ? velocityDelta : -velocityDelta;
-            rb.linearVelocity += new Vector3(velocityDelta, 0f);
-        }
+        // Set the initial speed of the ball
+        rb.linearVelocity = new Vector3(xStartDir, yStartDir, 0).normalized * ballSpeed;
 
-        if (Mathf.Abs(rb.linearVelocity.y) < minVelocity)
+        // Calculate the minimum allowable offset using the minimum deflection angle in radians
+        minOffset = Mathf.Sin(minAxisOffsetDegrees * Mathf.Deg2Rad) * ballSpeed;
+    }
+
+    // Ensures that the ball speed is always equal to ballSpeed
+    private void MaintainConstantSpeed()
+    {
+        if (rb.linearVelocity.magnitude < ballSpeed || rb.linearVelocity.magnitude > ballSpeed)
         {
-            velocityDelta = Random.value < 0.5f ? velocityDelta : -velocityDelta;
-            rb.linearVelocity += new Vector3(0f, velocityDelta);
+            rb.linearVelocity = rb.linearVelocity.normalized * ballSpeed;
         }
     }
 
+    // Method to adjust the ball speed if it drops below the minimum on any axis
+    private void TweakVelocityIfNeeded()
+    {
+        Vector3 velocity = rb.linearVelocity;
+        bool pathAltered = false;
+
+        // Check and adjust the speed on the X and Y axis
+        velocity.x = CheckAndAdjustAxis(velocity.x, ref pathAltered);
+        velocity.y = CheckAndAdjustAxis(velocity.y, ref pathAltered);
+
+        // If the address has changed, normalize and apply the new speed
+        if (pathAltered)
+        {
+            rb.linearVelocity = velocity.normalized * ballSpeed;
+        }
+    }
+
+    // Method to check and adjust an axis if it is less than the minimum allowed
+    private float CheckAndAdjustAxis(float axisValue, ref bool pathAltered)
+    {
+        if (Mathf.Abs(axisValue) < minOffset)
+        {
+            // Generate a random adjustment and change the axis value
+            float randomAdjustment = Random.Range(minAdjustment, maxAdjustment) * Mathf.Sign(Random.Range(-1f, 1f));
+            pathAltered = true; // Indicates that the direction of the ball has changed
+            return axisValue + randomAdjustment;
+        }
+
+        return axisValue;
+    }
+
+    #endregion
+
+    // Increases the speed of the ball every time it collides with an object
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Block"))
-        {
-            rb.linearVelocity *= velocityMultiplayer;
-        }
-
-        VelocityFix();
+        ballSpeed += ballSpeedIncrease;
+        TweakVelocityIfNeeded();
     }
 }
