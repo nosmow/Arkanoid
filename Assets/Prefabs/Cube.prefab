@@ -121,4 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891d80516822d5445870509fbe42e1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resistance: 1
   particles: {fileID: 7902484117509173392, guid: d3c4a503fa818b24988b6feaf5d2815e, type: 3}
