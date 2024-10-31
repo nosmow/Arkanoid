@@ -8,16 +8,15 @@ public class BallMovement : MonoBehaviour
     [SerializeField] private float ballSpeedIncrease = 0.05f;
 
     [Header("Start Direction")]
-    [SerializeField] private float xStartDir = 0.0f;
-    [SerializeField] private float yStartDir = 1.0f;
+    [SerializeField] private float xStartDir = 4f;
+    [SerializeField] private float yStartDir = 6f;
 
     [Header("Random Adjustment Range")]
-    [SerializeField] private float minAdjustment = 0.5f;
-    [SerializeField] private float maxAdjustment = 3f;
+    [SerializeField] private float minAdjustment = 1f;
+    [SerializeField] private float maxAdjustment = 5f;
 
     private Rigidbody rb;
     private float minOffset;
-    private bool isMoving;
 
     void Start()
     {
@@ -26,7 +25,7 @@ public class BallMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isMoving)
+        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isMoving)
         {
             StartMoving();
         }
@@ -34,7 +33,7 @@ public class BallMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isMoving)
+        if (GameManager.Instance.isMoving)
         {
             MaintainConstantSpeed();
         }
@@ -52,6 +51,10 @@ public class BallMovement : MonoBehaviour
 
         // Calculate the minimum allowable offset using the minimum deflection angle in radians
         minOffset = Mathf.Sin(minAxisOffsetDegrees * Mathf.Deg2Rad) * ballSpeed;
+
+        gameObject.transform.parent = null;
+
+        GameManager.Instance.isMoving = true;
     }
 
     // Ensures that the ball speed is always equal to ballSpeed
@@ -100,6 +103,10 @@ public class BallMovement : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ballSpeed += ballSpeedIncrease;
-        TweakVelocityIfNeeded();
+
+        if (GameManager.Instance.isMoving)
+        {
+            TweakVelocityIfNeeded();
+        }
     }
 }
