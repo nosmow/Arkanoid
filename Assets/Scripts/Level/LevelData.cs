@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [Serializable]
 public class RowData
@@ -13,15 +14,25 @@ public class RowData
 [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjects/levelData", order = 1)]
 public class LevelData : ScriptableObject
 {
+    [Header("Level settings")]
     [Tooltip("Number of columns for the level")]
     public int numCols;
 
     [Tooltip("Number of rows per column")]
     public int numRows;
 
-    //Save the columns that will contain the level
+    [HideInInspector] public float maxScore;
+
+    [Header("Level columns and rows")]
     public RowData[] columns;
 
+    [Header("Level power-ups")]
+    public GameObject[] powerups;
+
+
+    #region Methods
+
+    // Validates that the number of rows and columns is correct every time it is modified
     private void OnValidate()
     {
         CheckColumns();
@@ -60,4 +71,6 @@ public class LevelData : ScriptableObject
             }
         }
     }
+
+    #endregion
 }
