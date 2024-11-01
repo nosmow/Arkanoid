@@ -2602,7 +2602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 881481b7cd5c00a45b2c53208ecc0a6e, type: 2}
   m_sharedMaterial: {fileID: -3692368357608145598, guid: 881481b7cd5c00a45b2c53208ecc0a6e, type: 2}
@@ -3557,6 +3557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textLivesPlayer: {fileID: 924267597}
+  textLevelScore: {fileID: 1718539686}
 --- !u!1 &1513393601
 GameObject:
   m_ObjectHideFlags: 0
@@ -4744,7 +4745,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1200
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 881481b7cd5c00a45b2c53208ecc0a6e, type: 2}
   m_sharedMaterial: {fileID: -3692368357608145598, guid: 881481b7cd5c00a45b2c53208ecc0a6e, type: 2}

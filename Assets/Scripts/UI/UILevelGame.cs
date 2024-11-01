@@ -7,6 +7,7 @@ public class UILevelGame : MonoBehaviour
 {
     [Header("UI Settings")]
     [SerializeField] private TextMeshProUGUI textLivesPlayer;
+    [SerializeField] private TextMeshProUGUI textLevelScore;
 
     private PlayerController playerReference;
 
@@ -15,6 +16,7 @@ public class UILevelGame : MonoBehaviour
         playerReference = FindAnyObjectByType<PlayerController>();
 
         PlayerEvents();
+        GameMangerEvents();
     }
 
     #region Call Events
@@ -29,6 +31,12 @@ public class UILevelGame : MonoBehaviour
         }
     }
 
+    // Calls the events of the Game Manager
+    private void GameMangerEvents()
+    {
+        GameManager.Instance.OnScoreChanged += UpdateLevelScoreUI;
+    }
+
     #endregion
 
     #region Methods
@@ -37,6 +45,12 @@ public class UILevelGame : MonoBehaviour
     private void UpdateLifesUI(int currentLife)
     {
         textLivesPlayer.text = currentLife.ToString();
+    }
+
+    // Update level score in UI
+    private void UpdateLevelScoreUI(int score)
+    {
+        textLevelScore.text = score.ToString();
     }
 
     #endregion

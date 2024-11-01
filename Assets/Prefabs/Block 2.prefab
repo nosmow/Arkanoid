@@ -124,4 +124,6 @@ MonoBehaviour:
   resistance: 2
   isRock: 0
   particles: {fileID: 7902484117509173392, guid: d3c4a503fa818b24988b6feaf5d2815e, type: 3}
+  addScore: 20
   changeMaterial: {fileID: 2100000, guid: 52c6e066870c80b4eb35899f44aa43f1, type: 2}
+  timeChangeMaterial: 0.2

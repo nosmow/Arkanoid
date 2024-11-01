@@ -21,11 +21,35 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
-    // Validates if the ball is in motion
-    public bool isMoving; 
+    private int score;
 
+    // Validates if the ball is in motion
+    public bool isMoving;
+    
     private PlayerController player;
     private BallController ball;
+
+    #region Events
+
+    public event Action<int> OnScoreChanged;
+
+    #endregion
+
+    #region GET / SET
+
+    public void SetScore(int score)
+    {
+        if (score != 0)
+        {
+            this.score += score;
+
+            OnScoreChanged?.Invoke(this.score);
+        }
+    }
+   
+    public int GetScore() { return this.score; }
+
+    #endregion
 
     private void Start()
     {
@@ -35,7 +59,7 @@ public class GameManager : MonoBehaviour
         PlayerEvents();
     }
 
-    #region Events
+    #region Call Events
 
     // Calls the event if the player dies
     private void PlayerEvents()
@@ -48,8 +72,12 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region Methods
+
     private void GameOver()
     {
         print("Game Over");
     }
+
+    #endregion
 }
