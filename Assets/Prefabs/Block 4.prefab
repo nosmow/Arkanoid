@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7427150422706135326}
   - component: {fileID: 5659134144922544432}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Block 4
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24c79e117f052404089c5010745567a1, type: 2}
+  - {fileID: 2100000, guid: 4138fff68afd00f4dacbb1e5ba881c86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,4 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891d80516822d5445870509fbe42e1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particles: {fileID: 7902484117509173392, guid: d3c4a503fa818b24988b6feaf5d2815e, type: 3}
+  resistance: 0
+  isRock: 1
+  particles: {fileID: 0}
+  changeMaterial: {fileID: 0}
