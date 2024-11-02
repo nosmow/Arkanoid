@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4549896223507956992}
   - component: {fileID: 4055782146594682692}
   - component: {fileID: 1418281632225813079}
+  - component: {fileID: 7000800245870870452}
+  - component: {fileID: -6741808699397099738}
   m_Layer: 0
   m_Name: Block 2
   m_TagString: Block
@@ -121,9 +123,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891d80516822d5445870509fbe42e1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockType: 2
   resistance: 2
   isRock: 0
-  particles: {fileID: 7902484117509173392, guid: d3c4a503fa818b24988b6feaf5d2815e, type: 3}
-  addScore: 20
+--- !u!114 &7000800245870870452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501570419062470606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578474bc3d8982047ad05bfa4e9eec0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   changeMaterial: {fileID: 2100000, guid: 52c6e066870c80b4eb35899f44aa43f1, type: 2}
   timeChangeMaterial: 0.2
+  particles: {fileID: 7902484117509173392, guid: d3c4a503fa818b24988b6feaf5d2815e, type: 3}
+--- !u!114 &-6741808699397099738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501570419062470606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bac9eb9fcb1234a807c9365e3c0c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addScore: 20

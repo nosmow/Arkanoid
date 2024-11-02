@@ -1,25 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public LevelData levelData;
-    public GameObject[] blockPrefabs;
+    [SerializeField] private ObjectPool pool;
 
-    private void Start()
+    [SerializeField] private List<LevelData> levelDataList = new List<LevelData>();
+    [SerializeField] private List<GameObject> blocks = new List<GameObject>();
+
+    private int currentLevel;
+    private bool levelLoaded;
+
+    #region Events
+
+    public event Action OnChangedLevel;
+
+    #endregion
+
+    /// <summary>
+    /// Switches to the specified level, resetting blocks, loading new data, and
+    /// resetting the game values.
+    /// </summary>
+    public void ChangedLevel(int num)
     {
-        LoadLevel();
+        LevelData level = levelDataList[num];
+
+        if (level == null) return;
+
+        // Sets the current level to the specified level number.
+        currentLevel = num;
+
+        // Return all current blocks to the pool for reuse.
+        foreach (var block in blocks)
+        {
+            int blockType = block.GetComponent<Block>().GetBlockType();
+            pool.ReturnBlock(blockType, block);
+        }
+
+        blocks.Clear();
+
+        // Load the current level-specific data.
+        LoadData(num);
+
+        GameManager.Instance.ResetValues();
+
+        // Call the OnChangedLevel event to notify other systems that the level has changed.
+        OnChangedLevel?.Invoke();
+
+        levelLoaded = true;
     }
 
-    public void LoadLevel()
+    private void LoadData(int num)
     {
-        if (levelData == null || levelData.columns == null) return;
+        var levelData = levelDataList[num];
+        if (levelData?.columns == null) return;
+
         
         // Iterate over each column at the level
         for (int col = 0; col < levelData.columns.Length; col++)
         {
             var columnData = levelData.columns[col];
-
-            if (columnData == null || columnData.rows == null) continue;
+            if (columnData?.rows == null) continue;
 
             // Increment that controls the horizontal scrolling
             int increment = 0;
@@ -33,10 +76,14 @@ public class LevelManager : MonoBehaviour
                     // Gets the type of block to instantiate
                     int blockType = columnData.rows[row] - 1;
 
-                    if (blockType >= 0 && blockType < blockPrefabs.Length)
+                    if (blockType >= 0 && blockType < pool.blockPrefabs.Length)
                     {
                         Vector3 position = new Vector3((row + increment), -col, 0);
-                        Instantiate(blockPrefabs[blockType], position, Quaternion.identity);
+
+                        var block = pool.GetBlock(blockType);
+                        block.transform.position = position;
+                        block.transform.parent = transform;
+                        blocks.Add(block);
                     }
                 }
 

@@ -121,7 +121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891d80516822d5445870509fbe42e1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockType: 4
   resistance: 0
   isRock: 1
   particles: {fileID: 0}
+  addScore: 0
   changeMaterial: {fileID: 0}
+  timeChangeMaterial: 0.2

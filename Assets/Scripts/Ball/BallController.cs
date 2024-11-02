@@ -11,6 +11,8 @@ public class BallController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        FindAnyObjectByType<LevelManager>().OnChangedLevel += ResetValues;
     }
 
     #region Methods
@@ -23,18 +25,19 @@ public class BallController : MonoBehaviour
         {
             player.TakeDamage(damage);
 
-            ResetValues(player.transform);
+            ResetValues();
         }
     }
 
-    public void ResetValues(Transform transform)
+    public void ResetValues()
     {
+        Transform playerTransform = GameObject.FindWithTag("Player").transform;
+
         rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
-        rb.transform.parent = transform;
-        rb.transform.position = new Vector3(transform.position.x, -offsetSpawnY, transform.position.z);
+        rb.transform.parent = playerTransform;
+        rb.transform.position = new Vector3(playerTransform.position.x, -offsetSpawnY, playerTransform.position.z);
         GameManager.Instance.isMoving = false;
-
     }
 
     #endregion

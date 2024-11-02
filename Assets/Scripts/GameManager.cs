@@ -74,10 +74,18 @@ public class GameManager : MonoBehaviour
 
     #region Methods
 
+    public void ResetValues()
+    {
+        score = 0;
+        OnScoreChanged?.Invoke(0);
+    }
+
     private void GameOver()
     {
         print("Game Over");
     }
 
     #endregion
+
+
 }

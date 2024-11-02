@@ -511,12 +511,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c64ef1ede3bb784c894ac10cc444077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: 3dc1aba98ce83af48a44faeb8134d3c0, type: 2}
   blockPrefabs:
   - {fileID: 6366290146332241100, guid: a7c3367bd908d294e8fc840b7d444480, type: 3}
   - {fileID: 5501570419062470606, guid: ebaeae939efa5d24688b101609829b05, type: 3}
   - {fileID: 6118575772833682925, guid: 8338a9a0995238344b35a00959f791af, type: 3}
   - {fileID: 4026962677512715031, guid: 40deebbfcc15e2e41b94bae4fa2feb67, type: 3}
+  levelDataList:
+  - {fileID: 11400000, guid: 4c9455b2adc7ef34a848a4cd7bfe1c48, type: 2}
+  - {fileID: 11400000, guid: 381444528f8b89c44b7e1501619f4bdc, type: 2}
+  - {fileID: 11400000, guid: 3dc1aba98ce83af48a44faeb8134d3c0, type: 2}
+  blocks: []
 --- !u!4 &31257774
 Transform:
   m_ObjectHideFlags: 0
@@ -2995,6 +2999,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5830889066349697667, guid: 0603fd34c6853714e8581e04c45bfb50, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830889066349697667, guid: 0603fd34c6853714e8581e04c45bfb50, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -7411,7 +7419,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 777335346}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
@@ -7421,6 +7429,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 31257773}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: ChangedLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
         currentLife = maxLife;
     }
 
+    private void Start()
+    {
+        FindAnyObjectByType<LevelManager>().OnChangedLevel += ResetLife;
+    }
+
     #region Methods
 
     public void TakeDamage(int damage)
