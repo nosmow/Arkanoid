@@ -11,10 +11,14 @@ public class BlockVisualEffects : MonoBehaviour
     private new Renderer renderer;
     private Material baseMaterial;
 
-    private void Start()
+    private void Awake()
     {
         renderer = GetComponent<Renderer>();
         baseMaterial = renderer.material;
+    }
+    private void Start()
+    {
+       
     }
 
     public void ChangeMaterialTemporarily()
@@ -37,5 +41,10 @@ public class BlockVisualEffects : MonoBehaviour
             particles.GetComponent<Renderer>().material = renderer.material;
             Instantiate(particles, transform.position, Quaternion.identity);
         }
+    }
+    private void OnEnable()
+    {
+        renderer.material = baseMaterial;
+
     }
 }

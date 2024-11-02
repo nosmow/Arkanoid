@@ -44,7 +44,7 @@ public class LevelManager : MonoBehaviour
         // Load the current level-specific data.
         LoadData(num);
 
-        GameManager.Instance.ResetValues();
+        GamePlayManager.Instance.ResetValues();
 
         // Call the OnChangedLevel event to notify other systems that the level has changed.
         OnChangedLevel?.Invoke();
@@ -55,32 +55,33 @@ public class LevelManager : MonoBehaviour
     private void LoadData(int num)
     {
         var levelData = levelDataList[num];
-        if (levelData?.columns == null) return;
+        if (levelData?.rows == null) return;
 
         
         // Iterate over each column at the level
-        for (int col = 0; col < levelData.columns.Length; col++)
+        for (int col = 0; col < levelData.rows.Length; col++)
         {
-            var columnData = levelData.columns[col];
-            if (columnData?.rows == null) continue;
+            var columnData = levelData.rows[col];
+            if (columnData?.positions == null) continue;
 
             // Increment that controls the horizontal scrolling
             int increment = 0;
 
             // Iterate over each row in the current column
-            for (int row = 0; row < columnData.rows.Length; row++)
+            for (int row = 0; row < columnData.positions.Length; row++)
             {
                 // If the value of the row is different from 0, add a block to the scene
-                if (columnData.rows[row] != 0)
+                if (columnData.positions[row] != 0)
                 {
                     // Gets the type of block to instantiate
-                    int blockType = columnData.rows[row] - 1;
+                    int blockType = columnData.positions[row] - 1;
 
-                    if (blockType >= 0 && blockType < pool.blockPrefabs.Length)
+                    if (blockType >= 0 && blockType < pool.prefabs.Length)
                     {
                         Vector3 position = new Vector3((row + increment), -col, 0);
 
-                        var block = pool.GetBlock(blockType);
+                        var block = pool.GetObject(blockType);
+                        block.GetComponent<Block>().SetBlockType(blockType);
                         block.transform.position = position;
                         block.transform.parent = transform;
                         blocks.Add(block);

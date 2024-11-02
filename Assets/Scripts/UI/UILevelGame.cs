@@ -9,14 +9,10 @@ public class UILevelGame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textLivesPlayer;
     [SerializeField] private TextMeshProUGUI textLevelScore;
 
-    private PlayerController playerReference;
-
     private void Start()
     {
-        playerReference = FindAnyObjectByType<PlayerController>();
-
         PlayerEvents();
-        GameMangerEvents();
+        GamePlayManagerEvents();
     }
 
     #region Call Events
@@ -24,17 +20,17 @@ public class UILevelGame : MonoBehaviour
     // Calls the event if the player dies
     private void PlayerEvents()
     {
-        if (playerReference != null)
+        if (GamePlayManager.Instance != null)
         {
-            playerReference.OnLifeChanged += UpdateLifesUI;
-            UpdateLifesUI(playerReference.GetCurrentLife());
+            GamePlayManager.Instance.OnLifeChanged += UpdateLifesUI;
+            UpdateLifesUI(GamePlayManager.Instance.GetCurrentLife());
         }
     }
 
     // Calls the events of the Game Manager
-    private void GameMangerEvents()
+    private void GamePlayManagerEvents()
     {
-        GameManager.Instance.OnScoreChanged += UpdateLevelScoreUI;
+        GamePlayManager.Instance.OnScoreChanged += UpdateLevelScoreUI;
     }
 
     #endregion

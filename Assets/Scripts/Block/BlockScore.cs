@@ -8,6 +8,6 @@ public class BlockScore : MonoBehaviour
     //Method to add scores to the player
     public void AddScore()
     {
-        GameManager.Instance.SetScore(addScore);
+        GamePlayManager.Instance.SetScore(addScore);
     }
 }

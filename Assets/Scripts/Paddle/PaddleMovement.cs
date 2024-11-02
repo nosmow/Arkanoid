@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PaddleMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     

@@ -25,7 +25,7 @@ public class BallMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isMoving)
+        if (Input.GetKeyDown(KeyCode.Space) && !GamePlayManager.Instance.isBallMoving)
         {
             StartMoving();
         }
@@ -33,7 +33,7 @@ public class BallMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.isMoving)
+        if (GamePlayManager.Instance.isBallMoving)
         {
             MaintainConstantSpeed();
         }
@@ -54,7 +54,7 @@ public class BallMovement : MonoBehaviour
 
         gameObject.transform.parent = null;
 
-        GameManager.Instance.isMoving = true;
+        GamePlayManager.Instance.isBallMoving = true;
     }
 
     // Ensures that the ball speed is always equal to ballSpeed
@@ -104,7 +104,7 @@ public class BallMovement : MonoBehaviour
     {
         ballSpeed += ballSpeedIncrease;
 
-        if (GameManager.Instance.isMoving)
+        if (GamePlayManager.Instance.isBallMoving)
         {
             TweakVelocityIfNeeded();
         }

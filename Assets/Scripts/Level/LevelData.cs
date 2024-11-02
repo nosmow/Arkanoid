@@ -7,7 +7,7 @@ public class RowData
 {
     //Saves the rows of the column that will contain blocks
     [Tooltip("0 = No Block, 1 = Block Type 1, 2 = Block Type 2, etc.")]
-    public int[] rows = new int[5];
+    public int[] positions = new int[0];
 }
 
 // ScriptableObject to store the information of each level
@@ -15,59 +15,55 @@ public class RowData
 public class LevelData : ScriptableObject
 {
     [Header("Level settings")]
-    [Tooltip("Number of columns for the level")]
-    public int numCols;
+    [Tooltip("Number of rows for the level")]
+    public int numPositions;
 
-    [Tooltip("Number of rows per column")]
+    [Tooltip("Number of positions per row")]
     public int numRows;
 
     [HideInInspector] public float maxScore;
 
-    [Header("Level columns and rows")]
-    public RowData[] columns;
-
-    [Header("Level power-ups")]
-    public GameObject[] powerups;
-
+    [Header("Level rows and rows")]
+    public RowData[] rows;
 
     #region Methods
 
-    // Validates that the number of rows and columns is correct every time it is modified
+    // Validates that the number of rows and positions is correct every time it is modified
     private void OnValidate()
     {
-        CheckColumns();
+        CheckPositions();
         CheckRows();
     }
 
-    // Check and assign the correct number of columns
-    private void CheckColumns()
+    // Check and assign the correct number of positions
+    private void CheckPositions()
     {
-        if (columns == null || columns.Length != numCols)
+        if (rows == null || rows.Length != numRows)
         {
-            RowData[] newColumns = new RowData[numCols];
+            RowData[] newColumns = new RowData[numRows];
 
-            for (int i = 0; i < numCols; i++)
+            for (int i = 0; i < numRows; i++)
             {
-                newColumns[i] = (i < columns?.Length) ? columns[i] : new RowData();
+                newColumns[i] = (i < rows?.Length) ? rows[i] : new RowData();
             }
-            columns = newColumns;
+            rows = newColumns;
         }
     }
 
     // Check and assign the correct number of rows
     private void CheckRows()
     {
-        foreach (RowData col in columns)
+        foreach (RowData col in rows)
         {
-            if (col.rows.Length != numRows)
+            if (col.positions.Length != numRows)
             {
                 int[] newRows = new int[numRows];
 
-                for (int i = 0; i < numRows && i < col.rows.Length; i++)
+                for (int i = 0; i < numRows && i < col.positions.Length; i++)
                 {
-                    newRows[i] = col.rows[i];
+                    newRows[i] = col.positions[i];
                 }
-                col.rows = newRows;
+                col.positions = newRows;
             }
         }
     }

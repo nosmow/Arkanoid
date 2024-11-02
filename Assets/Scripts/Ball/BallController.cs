@@ -19,7 +19,7 @@ public class BallController : MonoBehaviour
 
     private void EnterTheLimit()
     {
-        PlayerController player = FindAnyObjectByType<PlayerController>();
+        GamePlayManager player = FindAnyObjectByType<GamePlayManager>();
 
         if (player != null)
         {
@@ -37,7 +37,7 @@ public class BallController : MonoBehaviour
         rb.isKinematic = true;
         rb.transform.parent = playerTransform;
         rb.transform.position = new Vector3(playerTransform.position.x, -offsetSpawnY, playerTransform.position.z);
-        GameManager.Instance.isMoving = false;
+        GamePlayManager.Instance.isBallMoving = false;
     }
 
     #endregion

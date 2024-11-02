@@ -12,6 +12,8 @@ public class Block : MonoBehaviour
     private BlockVisualEffects effects;
     private BlockScore scoreManager;
 
+    private int currentResistance;
+
     #region GET / SET
     
     public void SetBlockType(int type) { blockType = type; }
@@ -24,6 +26,8 @@ public class Block : MonoBehaviour
     {
         if (isRock) return;
 
+        currentResistance = resistance;
+
         effects = GetComponent<BlockVisualEffects>();
         scoreManager = GetComponent<BlockScore>();
     }
@@ -33,22 +37,23 @@ public class Block : MonoBehaviour
     // Decreases resistance
     private void DecreaseResistance()
     {
-        if (resistance > 1)
+        if (currentResistance > 1)
         {
             effects?.ChangeMaterialTemporarily();
         }
 
-        resistance--;
+        currentResistance--;
     }
 
     // Method to destroy the block
     private void DestroyBlock()
     {
         // Only applies if it is not rock type
-        if (resistance <= 0)
+        if (currentResistance <= 0)
         {
             effects?.PlayDestroyEffects();
             scoreManager?.AddScore();
+            GamePlayManager.Instance.SetDestroyedBlocks(gameObject.transform);
             gameObject.SetActive(false);
         }
     }
@@ -62,5 +67,11 @@ public class Block : MonoBehaviour
             DecreaseResistance();
             DestroyBlock();
         }
+    }
+
+    // Restore Resistance
+    private void OnEnable()
+    {
+        currentResistance = resistance;
     }
 }
