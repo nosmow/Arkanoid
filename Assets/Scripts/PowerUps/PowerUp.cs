@@ -77,6 +77,9 @@ public class PowerUp : MonoBehaviour
             obj = other.gameObject;
             TriggerPowerUp(other.gameObject);
             SetVisibility(false);
+
+            // Apply the sound effect
+            AudioManager.Instance.PlayPowerUpHitSound();
         }
         else if (other.gameObject.CompareTag("Obstacle"))
         {

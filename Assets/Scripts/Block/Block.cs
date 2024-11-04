@@ -66,6 +66,9 @@ public class Block : MonoBehaviour
         {
             DecreaseResistance();
             DestroyBlock();
+
+            // Apply the sound effect
+            AudioManager.Instance.PlayBlockDestroySound();
         }
     }
 

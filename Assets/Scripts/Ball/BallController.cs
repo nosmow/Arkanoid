@@ -51,6 +51,14 @@ public class BallController : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             EnterTheLimit();
+
+            // Apply the sound effect
+            AudioManager.Instance.PlayBallLostSound();
+        }
+        else
+        {
+            // Apply the sound effect
+            AudioManager.Instance.PlayBallHitSound();
         }
     }
 }

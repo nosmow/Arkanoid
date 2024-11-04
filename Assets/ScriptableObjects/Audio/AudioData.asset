@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593e4714bdc2b7e419855880c40059f9, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  backgroundMusic:
+  - {fileID: 8300000, guid: ca632f50a93587241922689ecdf0b30b, type: 3}
+  - {fileID: 8300000, guid: dfa97199763a889498fece7e6228d77d, type: 3}
+  - {fileID: 8300000, guid: 834d41396a351ef45a1116cd770b12d1, type: 3}
+  - {fileID: 8300000, guid: 6d0cbec6bbfe26a488dd1cb162096f92, type: 3}
+  - {fileID: 8300000, guid: 3b60a9b544d37b04aa435154ea592a57, type: 3}
+  - {fileID: 8300000, guid: c9e87977ef09eca45b574cb27f5e2364, type: 3}
+  ballHitSound: {fileID: 8300000, guid: f738a0429da5ef44a84b41e709cf1f2c, type: 3}
+  ballLostSound: {fileID: 8300000, guid: 6f5bcd109781eb446a5ce5542c11c130, type: 3}
+  powerUpHitSound: {fileID: 8300000, guid: dd64ee245766ed34d94436b7310129b5, type: 3}
+  blockDestroySound: {fileID: 8300000, guid: c1942fc2ebc195b4099cc328fc40d8ec, type: 3}

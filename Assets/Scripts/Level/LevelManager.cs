@@ -49,6 +49,8 @@ public class LevelManager : MonoBehaviour
 
         GamePlayManager.Instance.ResetValues();
 
+        AudioManager.Instance.PlayBackgroundMusic(currentLevel + 1);
+
         // Call the OnChangedLevel event to notify other systems that the level has changed.
         OnChangedLevel?.Invoke();
     }

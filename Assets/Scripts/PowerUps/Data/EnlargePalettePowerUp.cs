@@ -16,7 +16,6 @@ public class EnlargePalettePowerUp : PowerUpData
     // Returns the palette size to normal
     public override void RemoveEffect(GameObject target)
     {
-        Debug.Log("asasasasasasa");
         Enlarge(target, -enlargeSize);
 
     }
