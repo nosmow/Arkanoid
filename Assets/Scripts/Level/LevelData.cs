@@ -38,10 +38,22 @@ public class LevelData : ScriptableObject
     {
         for (int i = 0; i < rows.Length; i++)
         {
-            if (rows[i].positions == null || rows[i].positions.Length != numPositions)
+            if (rows[i].positions != null && rows[i].positions.Length == numPositions)
             {
-                rows[i].positions = new int[numPositions];
+                continue;
             }
+
+            int[] newPositions = new int[numPositions];
+
+            if (rows[i].positions != null)
+            {
+                for (int j = 0; j < Mathf.Min(rows[i].positions.Length, newPositions.Length); j++)
+                {
+                    newPositions[j] = rows[i].positions[j];
+                }
+            }
+
+            rows[i].positions = newPositions;
         }
     }
 

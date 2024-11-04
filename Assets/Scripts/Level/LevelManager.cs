@@ -10,12 +10,15 @@ public class LevelManager : MonoBehaviour
     private List<GameObject> blocks = new List<GameObject>();
 
     private int blocksInLevel;
-
+    private int nonRockBlockCount;
     private int currentLevel;
 
     #region GET / SET
     
-    public int GetBlocksCount() { return blocks.Count; }
+    public int GetBlocksCount() 
+    {
+        return nonRockBlockCount;
+    }
 
     public int GetCurrentLevel() { return currentLevel; }
 
@@ -65,6 +68,7 @@ public class LevelManager : MonoBehaviour
         }
 
         blocks.Clear();
+        nonRockBlockCount = 0;
     }
 
     private void LoadData(int num)
@@ -100,6 +104,12 @@ public class LevelManager : MonoBehaviour
                         block.transform.position = position;
                        // block.transform.parent = transform;
                         blocks.Add(block);
+
+                        // Increment the counter if the block is not of type "rock"
+                        if (!block.GetComponent<Block>().GetIsRock())
+                        {
+                            nonRockBlockCount++;
+                        }
                     }
                 }
 

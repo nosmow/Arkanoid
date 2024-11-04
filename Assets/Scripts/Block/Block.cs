@@ -20,6 +20,8 @@ public class Block : MonoBehaviour
 
     public int GetBlockType() { return blockType; }
 
+    public bool GetIsRock() { return isRock; }
+
     #endregion
 
     private void Start()
