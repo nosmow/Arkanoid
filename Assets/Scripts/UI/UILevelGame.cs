@@ -14,6 +14,8 @@ public class UILevelGame : MonoBehaviour
     [Header("Panels Settings")]
     [SerializeField] private GameObject panelWin;
     [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private GameObject panelStart;
+    [SerializeField] private GameObject TransitionContainer;
 
     [Header("Buttons Settings")]
     [SerializeField] private Button nextLevelBtn;
@@ -105,6 +107,14 @@ public class UILevelGame : MonoBehaviour
     public void UpdateNumLevel()
     {
         textNumLevel.text = (FindAnyObjectByType<LevelManager>().GetCurrentLevel() + 1).ToString();
+
+        ActiveTransitions();
+    }
+
+    public void ActiveTransitions()
+    {
+        panelStart.SetActive(true);
+        TransitionContainer.SetActive(true);
     }
 
     #endregion
