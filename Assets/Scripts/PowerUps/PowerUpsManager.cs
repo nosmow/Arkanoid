@@ -16,6 +16,7 @@ public class PowerUpsManager : MonoBehaviour
 
         GamePlayManager.Instance.OnInstantiatePowerUp += ActivePowerUp;
         GamePlayManager.Instance.OnDisableAllPowerUps += DisableAllPowerUps;
+        GamePlayManager.Instance.OnPlayerDeath += DisableAllPowerUps;
 
         FindAnyObjectByType<LevelManager>().OnChangedLevel += DisableAllPowerUps;
     }

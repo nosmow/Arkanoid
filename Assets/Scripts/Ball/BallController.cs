@@ -43,6 +43,11 @@ public class BallController : MonoBehaviour
         }
     }
 
+    public void IncreaseSize(float size)
+    {
+        transform.localScale = new Vector3(transform.localScale.x + size, transform.localScale.y + size, transform.localScale.z + size);
+    }
+
     #endregion
 
     // Increases the speed of the ball every time it collides with an object

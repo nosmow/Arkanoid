@@ -2491,6 +2491,7 @@ MonoBehaviour:
   - {fileID: 6468635995831009778, guid: 67d1f65846304d440bf7f05934734d9e, type: 3}
   - {fileID: 5466799321077636649, guid: 4d85b372fbb9c06489cf28b94d8c77ef, type: 3}
   - {fileID: 3766991049361174237, guid: 505408e908ec2c1418e4837a6ee11cf2, type: 3}
+  - {fileID: 6009069147507575848, guid: 58103ad6827487847818dbdecd10a05e, type: 3}
   initialAmount: 0
 --- !u!1 &548316541
 GameObject:
