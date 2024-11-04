@@ -34,13 +34,14 @@ public class GamePlayManager : MonoBehaviour
     // Validates if the ball is in motion
     public bool isBallMoving;
 
-
     #region Events
 
     public event Action<int> OnScoreChanged;
     public event Action<int> OnLifeChanged;
     public event Action OnPlayerDeath;
     public event Action<Transform> OnInstantiatePowerUp;
+    public event Action OnBlocksAreGone;
+    public event Action OnDisableAllPowerUps;
 
     #endregion
 
@@ -75,6 +76,8 @@ public class GamePlayManager : MonoBehaviour
         destroyedBlocks ++;
 
         ActivePowerUp(block);
+
+        BlocksAreGone();
     }
 
     public int GetDestroyedBlocks() { return destroyedBlocks; }
@@ -94,35 +97,45 @@ public class GamePlayManager : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (damage <= 0) return;
+        // Invoke the event only if the life has changed
+        OnDisableAllPowerUps?.Invoke();
 
         currentLife -= damage;
-
-        // Invoke the event only if the life has changed
         OnLifeChanged?.Invoke(currentLife);
-        
-        if (currentLife > 0) return ;
 
         // Summons the event if the player runs out of lives
-        OnPlayerDeath?.Invoke();
+        if (currentLife <= 0)
+        {
+            OnPlayerDeath?.Invoke();
+        }
     }
 
     public void ResetValues()
     {
         score = 0;
         currentLife = maxLife;
+        destroyedBlocks = 0;
+        isBallMoving = false;
 
         OnScoreChanged?.Invoke(0);
         OnLifeChanged?.Invoke(currentLife);
     }
 
+    public void BlocksAreGone()
+    {
+        if (destroyedBlocks >= FindAnyObjectByType<LevelManager>().GetBlocksCount())
+        {
+            destroyedBlocks = 0;
+            OnBlocksAreGone?.Invoke();
+        }
+    }
+
     // Activate a power up if the condition is met
     public void ActivePowerUp(Transform block)
     {
-        if (destroyedBlocks >= powerUpInterval)
+        if (destroyedBlocks % powerUpInterval == 0)
         {
             OnInstantiatePowerUp?.Invoke(block);
-            destroyedBlocks = 0;
         }
     }
 

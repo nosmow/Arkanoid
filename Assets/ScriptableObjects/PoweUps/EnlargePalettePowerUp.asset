@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EnlargePalettePowerUp
   m_EditorClassIdentifier: 
   durationTime: 15
-  fallSpeed: 0.5
+  fallSpeed: 5
   enlargeSize: 4

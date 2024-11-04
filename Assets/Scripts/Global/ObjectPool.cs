@@ -6,7 +6,7 @@ public class ObjectPool : MonoBehaviour
     public GameObject[] prefabs;
     [SerializeField] private int initialAmount = 10;
 
-    [SerializeField]private Queue<GameObject>[] poolQueues;
+    [SerializeField] private Queue<GameObject>[] poolQueues;
 
     #region GET / SET
 
@@ -43,6 +43,7 @@ public class ObjectPool : MonoBehaviour
     public GameObject GetObject(int index)
     {
         GameObject obj;
+
         if (poolQueues[index].Count > 0)
         {
             obj = poolQueues[index].Dequeue();
@@ -57,7 +58,7 @@ public class ObjectPool : MonoBehaviour
     }
 
     // Method to return an object to the pool when it is no longer needed in the scene.
-    public void ReturnBlock(int index, GameObject obj)
+    public void ReturnObject(int index, GameObject obj)
     {
         obj.SetActive(false);
         poolQueues[index].Enqueue(obj);

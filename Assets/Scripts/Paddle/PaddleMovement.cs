@@ -20,10 +20,17 @@ public class PaddleMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (moveDirection != Vector3.zero)
+        if (CanMove())
         {
-            //Vector3 newPostion = rb.
             rb.MovePosition(rb.position + moveDirection * Time.fixedDeltaTime);
         }
+    }
+
+    private bool CanMove()
+    {
+        if (moveDirection == Vector3.zero) return false;
+        if (GameManager.Instance.GetPauseGame()) return false;
+
+        return true;
     }
 }

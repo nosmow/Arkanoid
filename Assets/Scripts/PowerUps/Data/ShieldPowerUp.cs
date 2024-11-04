@@ -10,7 +10,7 @@ public class ShieldPowerUp : PowerUpData
     [SerializeField] private string shieldTagName;
 
     #region Methods
-
+    
     // Turns the hidden object into a shield
     public override void ApplyEffect(GameObject target)
     {
@@ -27,8 +27,12 @@ public class ShieldPowerUp : PowerUpData
     private void ChangeDataObject(string tag1, string tag2, bool active)
     {
         var obj = GameObject.FindWithTag(tag1);
-        obj.GetComponent<Renderer>().enabled = active;
-        obj.tag = tag2;
+
+        if (obj != null)
+        {
+            obj.GetComponent<Renderer>().enabled = active;
+            obj.tag = tag2;
+        }  
     }
 
     #endregion

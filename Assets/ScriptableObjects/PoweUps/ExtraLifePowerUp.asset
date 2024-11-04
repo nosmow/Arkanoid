@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ExtraLifePowerUp
   m_EditorClassIdentifier: 
   durationTime: 1
-  fallSpeed: 0.5
+  fallSpeed: 5
   extraLife: 1

@@ -21,8 +21,6 @@ public class LevelData : ScriptableObject
     [Tooltip("Number of positions per row")]
     public int numRows;
 
-    [HideInInspector] public float maxScore;
-
     [Header("Level rows and rows")]
     public RowData[] rows;
 
@@ -38,33 +36,33 @@ public class LevelData : ScriptableObject
     // Check and assign the correct number of positions
     private void CheckPositions()
     {
-        if (rows == null || rows.Length != numRows)
+        for (int i = 0; i < rows.Length; i++)
         {
-            RowData[] newColumns = new RowData[numRows];
-
-            for (int i = 0; i < numRows; i++)
+            if (rows[i].positions == null || rows[i].positions.Length != numPositions)
             {
-                newColumns[i] = (i < rows?.Length) ? rows[i] : new RowData();
+                rows[i].positions = new int[numPositions];
             }
-            rows = newColumns;
         }
     }
 
     // Check and assign the correct number of rows
     private void CheckRows()
     {
-        foreach (RowData col in rows)
+        if (rows == null || rows.Length != numRows)
         {
-            if (col.positions.Length != numRows)
+            RowData[] newRows = new RowData[numRows];
+            for (int i = 0; i < numRows; i++)
             {
-                int[] newRows = new int[numRows];
-
-                for (int i = 0; i < numRows && i < col.positions.Length; i++)
+                if (i < rows?.Length)
                 {
-                    newRows[i] = col.positions[i];
+                    newRows[i] = rows[i];
                 }
-                col.positions = newRows;
+                else
+                {
+                    newRows[i] = new RowData();
+                }
             }
+            rows = newRows;
         }
     }
 

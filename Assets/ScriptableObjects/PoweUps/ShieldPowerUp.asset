@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ShieldPowerUp
   m_EditorClassIdentifier: 
   durationTime: 15
-  fallSpeed: 0.5
+  fallSpeed: 5
   tagObjectConvert: Obstacle
   shieldTagName: Shield

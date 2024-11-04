@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnlargePalettePowerUp", menuName = "PowerUps/EnlargePalette")]
 public class EnlargePalettePowerUp : PowerUpData
 {
-    [SerializeField] private int enlargeSize = 2;
+    [SerializeField] private int enlargeSize = 4;
 
     #region Methods
 
@@ -16,7 +16,9 @@ public class EnlargePalettePowerUp : PowerUpData
     // Returns the palette size to normal
     public override void RemoveEffect(GameObject target)
     {
+        Debug.Log("asasasasasasa");
         Enlarge(target, -enlargeSize);
+
     }
 
     // Method to lengthen the palette

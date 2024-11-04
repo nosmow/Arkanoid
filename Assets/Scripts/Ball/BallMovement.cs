@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BallMovement : MonoBehaviour
 {
@@ -21,11 +22,13 @@ public class BallMovement : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+
+        GamePlayManager.Instance.isBallMoving = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !GamePlayManager.Instance.isBallMoving)
+        if (CanStart())
         {
             StartMoving();
         }
@@ -40,6 +43,15 @@ public class BallMovement : MonoBehaviour
     }
 
     #region Methods
+
+    private bool CanStart()
+    {
+        if (!Input.GetKeyDown(KeyCode.Space)) return false;       
+        if (GamePlayManager.Instance.isBallMoving) return false; 
+        if (GameManager.Instance.GetPauseGame()) return false;
+
+        return true;
+    }
 
     // Method for starting the ball movement
     private void StartMoving()

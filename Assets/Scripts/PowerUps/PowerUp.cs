@@ -7,6 +7,8 @@ public class PowerUp : MonoBehaviour
 
     Rigidbody rb;
 
+    private GameObject obj;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -15,7 +17,7 @@ public class PowerUp : MonoBehaviour
     private void FixedUpdate()
     {
         // Add a constant force to make the power up fall
-        rb.AddForce(Vector3.down * powerUpData.fallSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange); 
+        rb.linearVelocity = Vector3.down * powerUpData.fallSpeed; 
     }
 
     #region Methods
@@ -46,6 +48,7 @@ public class PowerUp : MonoBehaviour
         
         powerUpData.RemoveEffect(target);
         SetVisibility(true);
+        obj = null;
         gameObject.SetActive(false);
     }
 
@@ -57,12 +60,23 @@ public class PowerUp : MonoBehaviour
         SetVisibility(true);
     }
 
+    private void OnDisable()
+    {
+        if (obj != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            powerUpData.RemoveEffect(obj);
+        }
+    }
+
     // Check for collisions
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Paddle"))
         {
+            obj = other.gameObject;
             TriggerPowerUp(other.gameObject);
+            SetVisibility(false);
         }
         else if (other.gameObject.CompareTag("Obstacle"))
         {

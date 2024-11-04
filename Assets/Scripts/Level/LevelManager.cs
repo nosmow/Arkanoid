@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -8,10 +7,21 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private ObjectPool pool;
 
     [SerializeField] private List<LevelData> levelDataList = new List<LevelData>();
-    [SerializeField] private List<GameObject> blocks = new List<GameObject>();
+    private List<GameObject> blocks = new List<GameObject>();
+
+    private int blocksInLevel;
 
     private int currentLevel;
-    private bool levelLoaded;
+
+    #region GET / SET
+    
+    public int GetBlocksCount() { return blocks.Count; }
+
+    public int GetCurrentLevel() { return currentLevel; }
+
+    public int GetLevelsCount() { return levelDataList.Count; }
+
+    #endregion
 
     #region Events
 
@@ -32,14 +42,7 @@ public class LevelManager : MonoBehaviour
         // Sets the current level to the specified level number.
         currentLevel = num;
 
-        // Return all current blocks to the pool for reuse.
-        foreach (var block in blocks)
-        {
-            int blockType = block.GetComponent<Block>().GetBlockType();
-            pool.ReturnBlock(blockType, block);
-        }
-
-        blocks.Clear();
+        ResetBlocks();
 
         // Load the current level-specific data.
         LoadData(num);
@@ -48,8 +51,18 @@ public class LevelManager : MonoBehaviour
 
         // Call the OnChangedLevel event to notify other systems that the level has changed.
         OnChangedLevel?.Invoke();
+    }
 
-        levelLoaded = true;
+    private void ResetBlocks()
+    {
+        // Return all current blocks to the pool for reuse.
+        foreach (var block in blocks)
+        {
+            int blockType = block.GetComponent<Block>().GetBlockType();
+            pool.ReturnObject(blockType, block);
+        }
+
+        blocks.Clear();
     }
 
     private void LoadData(int num)
@@ -83,7 +96,7 @@ public class LevelManager : MonoBehaviour
                         var block = pool.GetObject(blockType);
                         block.GetComponent<Block>().SetBlockType(blockType);
                         block.transform.position = position;
-                        block.transform.parent = transform;
+                       // block.transform.parent = transform;
                         blocks.Add(block);
                     }
                 }
@@ -93,4 +106,6 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+
+
 }

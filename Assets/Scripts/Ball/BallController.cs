@@ -13,17 +13,16 @@ public class BallController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         FindAnyObjectByType<LevelManager>().OnChangedLevel += ResetValues;
+        GamePlayManager.Instance.OnBlocksAreGone += ResetValues;
     }
 
     #region Methods
 
     private void EnterTheLimit()
     {
-        GamePlayManager player = FindAnyObjectByType<GamePlayManager>();
-
-        if (player != null)
+        if (GamePlayManager.Instance != null)
         {
-            player.TakeDamage(damage);
+            GamePlayManager.Instance.TakeDamage(damage);
 
             ResetValues();
         }
@@ -31,13 +30,17 @@ public class BallController : MonoBehaviour
 
     public void ResetValues()
     {
-        Transform playerTransform = GameObject.FindWithTag("Player").transform;
+       Transform paddle = GameObject.FindWithTag("Paddle").transform;
 
-        rb.linearVelocity = Vector3.zero;
-        rb.isKinematic = true;
-        rb.transform.parent = playerTransform;
-        rb.transform.position = new Vector3(playerTransform.position.x, -offsetSpawnY, playerTransform.position.z);
-        GamePlayManager.Instance.isBallMoving = false;
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+            rb.transform.parent = paddle;
+            rb.transform.position = new Vector3(paddle.position.x, -offsetSpawnY, paddle.position.z);
+            GamePlayManager.Instance.isBallMoving = false;
+        }
     }
 
     #endregion
