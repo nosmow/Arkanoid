@@ -37,14 +37,14 @@ public class Block : MonoBehaviour
     #region Methods
 
     // Decreases resistance
-    private void DecreaseResistance()
+    private void DecreaseResistance(int damage)
     {
         if (currentResistance > 1)
         {
             effects?.ChangeMaterialTemporarily();
         }
 
-        currentResistance--;
+        currentResistance -= damage;
     }
 
     // Method to destroy the block
@@ -66,7 +66,8 @@ public class Block : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ball") && !isRock)
         {
-            DecreaseResistance();
+            var damage = collision.gameObject.GetComponent<BallController>().GetDamage();
+            DecreaseResistance(damage);
             DestroyBlock();
 
             // Apply the sound effect

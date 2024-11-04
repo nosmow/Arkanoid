@@ -1,17 +1,40 @@
+using System.Collections;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
 { 
-    [Header("Damage Settings")]
     [SerializeField] private int damage = 1;
-    [SerializeField] private float offsetSpawnY;
+
+    private int currentDamage;
 
     private Rigidbody rb;
 
+    private float startPositionY;
+
+    #region GET / SET
+    
+    public void SetDamage(int newDamage)
+    {
+        if (currentDamage <= damage)
+        {
+            currentDamage = newDamage;
+        }
+        else
+        {
+            currentDamage = damage;
+        }
+    }
+
+    public int GetDamage() { return currentDamage; }
+    
+    #endregion
+
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        currentDamage = damage;
 
+        rb = GetComponent<Rigidbody>();
+        startPositionY = transform.position.y;
         FindAnyObjectByType<LevelManager>().OnChangedLevel += ResetValues;
         GamePlayManager.Instance.OnBlocksAreGone += ResetValues;
     }
@@ -32,15 +55,22 @@ public class BallController : MonoBehaviour
     {
        Transform paddle = GameObject.FindWithTag("Paddle").transform;
 
+
         if (rb != null)
         {
+
             rb.isKinematic = false;
             rb.linearVelocity = Vector3.zero;
-            rb.isKinematic = true;
-            rb.transform.parent = paddle;
-            rb.transform.position = new Vector3(paddle.position.x, -offsetSpawnY, paddle.position.z);
-            GamePlayManager.Instance.isBallMoving = false;
+            transform.position = new Vector3(paddle.position.x, startPositionY, paddle.position.z);
+            StartCoroutine(WaitForStart());
         }
+    }
+
+    private IEnumerator WaitForStart()
+    {
+        yield return new WaitForSeconds(0.01f);
+        rb.isKinematic = true;
+        GamePlayManager.Instance.isBallMoving = false;
     }
 
     public void IncreaseSize(float size)

@@ -3,7 +3,8 @@ using UnityEngine;
 public class PaddleMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    
+    [SerializeField] private float limitLeft, limitRight;
+
     private Rigidbody rb;
     private Vector3 moveDirection;
 
@@ -22,7 +23,11 @@ public class PaddleMovement : MonoBehaviour
     {
         if (CanMove())
         {
-            rb.MovePosition(rb.position + moveDirection * Time.fixedDeltaTime);
+            Vector3 newPosition = rb.position + moveDirection * Time.fixedDeltaTime;
+
+            newPosition.x = Mathf.Clamp(newPosition.x, limitLeft, limitRight);
+
+            rb.MovePosition(newPosition);
         }
     }
 

@@ -3,7 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnlargeBallPowerUp", menuName = "PowerUps/EnlargeBall")]
 public class EnlargeBallPowerUp : PowerUpData
 {
-    [SerializeField] private int enlargeSize = 2;
+    [SerializeField] private int enlargeSize = 1;
+
+    public int damage = 2;
 
     #region Methods
 
@@ -30,6 +32,7 @@ public class EnlargeBallPowerUp : PowerUpData
             if (ball != null)
             {
                 ball.IncreaseSize(size);
+                ball.SetDamage(damage);
             }
         }
     }

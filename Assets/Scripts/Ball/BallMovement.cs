@@ -4,26 +4,17 @@ using UnityEngine.EventSystems;
 public class BallMovement : MonoBehaviour
 {
     [Header("Ball Settings")]
-    [SerializeField] private float minAxisOffsetDegrees = 10f;
     [SerializeField] private float ballSpeed = 10f;
-    [SerializeField] private float ballSpeedIncrease = 0.05f;
+    [SerializeField] private Vector2 initialDirection = new Vector2(0f, -1f);
 
-    [Header("Start Direction")]
-    [SerializeField] private float xStartDir = 4f;
-    [SerializeField] private float yStartDir = 6f;
-
-    [Header("Random Adjustment Range")]
-    [SerializeField] private float minAdjustment = 1f;
-    [SerializeField] private float maxAdjustment = 5f;
-
+    private Vector2 currentDirection;
     private Rigidbody rb;
-    private float minOffset;
 
-    void Start()
+    private void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
-
+        rb = GetComponent<Rigidbody>();
         GamePlayManager.Instance.isBallMoving = false;
+        currentDirection = initialDirection.normalized;
     }
 
     private void Update()
@@ -38,7 +29,7 @@ public class BallMovement : MonoBehaviour
     {
         if (GamePlayManager.Instance.isBallMoving)
         {
-            MaintainConstantSpeed();
+            MoveBall();
         }
     }
 
@@ -46,8 +37,8 @@ public class BallMovement : MonoBehaviour
 
     private bool CanStart()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return false;       
-        if (GamePlayManager.Instance.isBallMoving) return false; 
+        if (!Input.GetKeyDown(KeyCode.Space)) return false;
+        if (GamePlayManager.Instance.isBallMoving) return false;
         if (GameManager.Instance.GetPauseGame()) return false;
 
         return true;
@@ -57,68 +48,40 @@ public class BallMovement : MonoBehaviour
     private void StartMoving()
     {
         rb.isKinematic = false;
-
-        // Set the initial speed of the ball
-        rb.linearVelocity = new Vector3(xStartDir, yStartDir, 0).normalized * ballSpeed;
-
-        // Calculate the minimum allowable offset using the minimum deflection angle in radians
-        minOffset = Mathf.Sin(minAxisOffsetDegrees * Mathf.Deg2Rad) * ballSpeed;
-
-        gameObject.transform.parent = null;
-
         GamePlayManager.Instance.isBallMoving = true;
     }
 
-    // Ensures that the ball speed is always equal to ballSpeed
-    private void MaintainConstantSpeed()
+    private void MoveBall()
     {
-        if (rb.linearVelocity.magnitude < ballSpeed || rb.linearVelocity.magnitude > ballSpeed)
-        {
-            rb.linearVelocity = rb.linearVelocity.normalized * ballSpeed;
-        }
+        rb.linearVelocity = currentDirection * ballSpeed;
     }
 
-    // Method to adjust the ball speed if it drops below the minimum on any axis
-    private void TweakVelocityIfNeeded()
+    private void ReflectDirection(Collision collision)
     {
-        Vector3 velocity = rb.linearVelocity;
-        bool pathAltered = false;
-
-        // Check and adjust the speed on the X and Y axis
-        velocity.x = CheckAndAdjustAxis(velocity.x, ref pathAltered);
-        velocity.y = CheckAndAdjustAxis(velocity.y, ref pathAltered);
-
-        // If the address has changed, normalize and apply the new speed
-        if (pathAltered)
-        {
-            rb.linearVelocity = velocity.normalized * ballSpeed;
-        }
+        Vector3 contactNormal = collision.contacts[0].normal;
+        currentDirection = Vector2.Reflect(currentDirection, contactNormal).normalized;
     }
 
-    // Method to check and adjust an axis if it is less than the minimum allowed
-    private float CheckAndAdjustAxis(float axisValue, ref bool pathAltered)
+    private void AdjustDirectionOnPaddle(Collision collision)
     {
-        if (Mathf.Abs(axisValue) < minOffset)
-        {
-            // Generate a random adjustment and change the axis value
-            float randomAdjustment = Random.Range(minAdjustment, maxAdjustment) * Mathf.Sign(Random.Range(-1f, 1f));
-            pathAltered = true; // Indicates that the direction of the ball has changed
-            return axisValue + randomAdjustment;
-        }
+        ContactPoint contact = collision.contacts[0];
+        Vector3 paddleCenter = collision.gameObject.transform.position;
 
-        return axisValue;
+        float hitFactor = (contact.point.x - paddleCenter.x) / collision.collider.bounds.size.x;
+        currentDirection = new Vector2(hitFactor, 1).normalized;
     }
 
     #endregion
 
-    // Increases the speed of the ball every time it collides with an object
     private void OnCollisionEnter(Collision collision)
     {
-        ballSpeed += ballSpeedIncrease;
-
-        if (GamePlayManager.Instance.isBallMoving)
+        if (collision.gameObject.CompareTag("Paddle"))
         {
-            TweakVelocityIfNeeded();
+            AdjustDirectionOnPaddle(collision);
+        }
+        else
+        {
+            ReflectDirection(collision);
         }
     }
 }
