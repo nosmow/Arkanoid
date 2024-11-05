@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 public class BallMovement : MonoBehaviour
 {
@@ -10,8 +11,14 @@ public class BallMovement : MonoBehaviour
     private Vector2 currentDirection;
     private Rigidbody rb;
 
+
+    // Input System 
+    private InputAction start;
+
     private void Start()
     {
+        AssingActionStart();
+
         rb = GetComponent<Rigidbody>();
         GamePlayManager.Instance.isBallMoving = false;
         currentDirection = initialDirection.normalized;
@@ -33,11 +40,27 @@ public class BallMovement : MonoBehaviour
         }
     }
 
+    #region Inputs
+
+    private void AssingActionStart()
+    {
+        start = InputSystem.actions.FindAction("Start");
+        start.performed += InputStart;
+        start.canceled -= InputStart;
+    }
+
+    private void InputStart(InputAction.CallbackContext ctx)
+    {
+        start = ctx.action;
+    }
+
+    #endregion
+
     #region Methods
 
     private bool CanStart()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return false;
+        if (!start.triggered) return false;
         if (GamePlayManager.Instance.isBallMoving) return false;
         if (GameManager.Instance.GetPauseGame()) return false;
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PaddleMovement : MonoBehaviour
 {
@@ -8,14 +9,19 @@ public class PaddleMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 moveDirection;
 
+    // Input System
+    private InputAction move;
+
     private void Start()
     {
+        AssingActionMove();
+
         rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        float movX = Input.GetAxisRaw("Horizontal");
+        float movX = move.ReadValue<Vector2>().x;
         moveDirection = new Vector3(movX, 0, 0).normalized * moveSpeed;
     }
 
@@ -30,6 +36,22 @@ public class PaddleMovement : MonoBehaviour
             rb.MovePosition(newPosition);
         }
     }
+
+    #region Inputs
+
+    private void AssingActionMove()
+    {
+        move = InputSystem.actions.FindAction("Move");
+        move.performed += InputMove;
+        move.canceled -= InputMove;
+    }
+
+    private void InputMove(InputAction.CallbackContext ctx)
+    {
+        move = ctx.action;
+    }
+
+    #endregion
 
     private bool CanMove()
     {
