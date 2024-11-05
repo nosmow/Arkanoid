@@ -5,6 +5,7 @@ public class PaddleMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float limitLeft, limitRight;
+    [SerializeField] private float limitChangeAmount = 2f;
 
     private Rigidbody rb;
     private Vector3 moveDirection;
@@ -38,6 +39,20 @@ public class PaddleMovement : MonoBehaviour
     }
 
     #region Inputs
+
+    public void ChangedLimits(float change)
+    {
+        if (change > 0)
+        {
+            limitLeft += limitChangeAmount;
+            limitRight -= limitChangeAmount;
+        }
+        else
+        {
+            limitLeft -= limitChangeAmount;
+            limitRight += limitChangeAmount;
+        }
+    }
 
     private void AssingActionMove()
     {

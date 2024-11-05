@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PowerUpsManager : MonoBehaviour
@@ -42,22 +43,20 @@ public class PowerUpsManager : MonoBehaviour
     /// </summary>
     private void ActivePowerUp(Transform block)
     {
-        int index = 0;
+        // Check if there are disabled powerUps
+        List<GameObject> inactivePowers = powers.Where(p => p != null && !p.activeSelf).ToList();
 
-        do
+        // If there are inactive powerUps
+        if (inactivePowers.Count > 0)
         {
-            index = Random.Range(0, powers.Count);
-        }
-        while (index == lastIndex);
+            int index = Random.Range(0, inactivePowers.Count);
+            GameObject powerUp = inactivePowers[index];
 
-        lastIndex = index;
-
-        GameObject powerUp = powers[index];
-
-        if (powerUp != null)
-        {
-            powerUp.transform.position = block.position;
-            powerUp.SetActive(true);
+            if (powerUp != null)
+            {
+                powerUp.transform.position = block.position;
+                powerUp.SetActive(true);
+            }
         }
     }
 
